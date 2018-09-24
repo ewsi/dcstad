@@ -10,8 +10,9 @@ To build for the host currently on:
  $ make -f Makefile.hostexample
  . Note: see the make recipe 'src/dcstad' to link static vs shared
 
-To generate autoconf files:
- $ autoreconf --install
+To re-generate autoconf files:
+ $ ./autogen.sh
+ . Note: this was originally done on Ubuntu 14.04.5
 
 
 
