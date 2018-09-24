@@ -10,14 +10,12 @@ clean:
 	rm -Rf Makefile Makefile.in aclocal.m4 autom4te.cache/ bin/ compile config.h config.h.in config.log config.status configure depcomp include/ install-sh libdcwproto/ libdcwsocket/ libs/ missing src/.deps/ src/Makefile src/Makefile.in src/dcstad src/*.o stamp-h1
 
 libdcwsocket/.built:
-	git clone ssh://git@code.cablelabs.com:7999/dcw/libdcwsocket.git
-	cd libdcwsocket && autoreconf --install
+	git clone -b configure_included ssh://git@code.cablelabs.com:7999/dcw/libdcwsocket.git
 	cd libdcwsocket && ./configure && $(MAKE)
 	touch $@
 
 libdcwproto/.built:
-	git clone ssh://git@code.cablelabs.com:7999/dcw/libdcwproto.git
-	cd libdcwproto && autoreconf --install
+	git clone -b configure_included ssh://git@code.cablelabs.com:7999/dcw/libdcwproto.git
 	cd libdcwproto && ./configure && $(MAKE)
 	touch $@
 
@@ -37,11 +35,7 @@ libs/libdcwproto.so: libdcwproto/.built
 	mkdir -p libs
 	cp -P libdcwproto/src/.libs/*.so* libdcwproto/src/.libs/*.a libs/
 
-configure: include/dcwsocket.h libs/libdcwsocket.so include/dcwproto.h libs/libdcwproto.so
-	autoreconf --install
-	touch $@
-
-src/dcstad: configure
+src/dcstad: configure include/dcwsocket.h libs/libdcwsocket.so include/dcwproto.h libs/libdcwproto.so
 	#CPPFLAGS="-I`pwd`/include" CFLAGS="$$CPPFLAGS" LDFLAGS="-L`pwd`/libs" ./configure
 	CPPFLAGS="-I`pwd`/include" CFLAGS="$$CPPFLAGS" LIBS="`pwd`/libs/libdcwsocket.a `pwd`/libs/libdcwproto.a" ./configure
 	$(MAKE)
