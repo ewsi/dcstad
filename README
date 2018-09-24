@@ -6,6 +6,10 @@ dcstad -- Dual-channel Wi-Fi Station (Client) Daemon
 
 
 BUILDING:
+To build for the host currently on:
+ $ make -f Makefile.hostexample
+ . Note: see the make recipe 'src/dcstad' to link static vs shared
+
 To generate autoconf files:
  $ autoreconf --install
 
