@@ -1,0 +1,13 @@
+
+
+dcstad -- Dual-channel Wi-Fi Station (Client) Daemon
+
+
+
+
+BUILDING:
+To generate autoconf files:
+ $ autoreconf --install
+
+
+
