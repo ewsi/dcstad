@@ -7,15 +7,15 @@ all: bin/dcstad
 
 
 clean:
-	rm -Rf Makefile Makefile.in aclocal.m4 autom4te.cache/ bin/ compile config.h config.h.in config.log config.status configure depcomp include/ install-sh libdcwproto/ libdcwsocket/ libs/ missing src/.deps/ src/Makefile src/Makefile.in src/dcstad src/*.o stamp-h1
+	rm -Rf Makefile autom4te.cache/ bin/ config.h config.log config.status include/ libdcwproto/ libdcwsocket/ libs/ src/.deps/ src/Makefile src/dcstad src/*.o stamp-h1
 
 libdcwsocket/.built:
-	git clone -b configure_included ssh://git@code.cablelabs.com:7999/dcw/libdcwsocket.git
+	git clone -b release ssh://git@code.cablelabs.com:7999/dcw/libdcwsocket.git
 	cd libdcwsocket && ./configure && $(MAKE)
 	touch $@
 
 libdcwproto/.built:
-	git clone -b configure_included ssh://git@code.cablelabs.com:7999/dcw/libdcwproto.git
+	git clone -b release ssh://git@code.cablelabs.com:7999/dcw/libdcwproto.git
 	cd libdcwproto && ./configure && $(MAKE)
 	touch $@
 
