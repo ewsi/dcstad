@@ -152,6 +152,7 @@ failure:
 int
 attempt_join_transaction(dcstad_cfg_t cfg) {
   struct dcwmsg msg;
+  int rv;
   unsigned i;
   const enum dcwmsg_id reply_filter[] = {
     DCWMSG_AP_ACCEPT_STA,
@@ -173,9 +174,9 @@ attempt_join_transaction(dcstad_cfg_t cfg) {
 
   /* try to send our message, then wait for a reply... */
   dcwlogdbgf("%s\n", "Broadcasting JOIN");
-  if (perform_dcw_transaction(cfg->signaling_sock, &msg, cfg->ap_macaddr, 5, reply_filter) != 1) {
+  if ((rv = perform_dcw_transaction(cfg->signaling_sock, &msg, cfg->ap_macaddr, 5, reply_filter)) != 1) {
     dcwlogdbgf("%s\n", "perform_dcw_transaction() failed");
-    return 0; /* failed */
+    return rv; /* failed */
   }
 
   /* got a reply... */
@@ -206,7 +207,7 @@ attempt_join_transaction(dcstad_cfg_t cfg) {
     dcwlogdbgf("Transmitting %s reply\n", (msg.id == DCWMSG_STA_ACK) ? "ACK" : "NACK");
     if (!dcwsock_send_msg(cfg->signaling_sock, &msg, cfg->ap_macaddr)) {
       dcwlogdbgf("%s\n", "dcw_send_msg() failed");
-      return 0; /* failed */
+      return -1; /* failed */
     }
     usleep(250000);
   }
