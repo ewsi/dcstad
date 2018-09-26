@@ -55,9 +55,17 @@ run_loop(dcstad_cfg_t cfg) {
   while (_run) {
     joined = 0;
     dcwlogdbgf("%s\n", "Attempting Join...");
-    if (!attempt_join_transaction(cfg)) {
+    switch(attempt_join_transaction(cfg)) {
+    default:
+    case -1: /* join failed, subsequent calls to attempt join will most likely fail */
+      return 1;
+
+    case 0: /* join failed... nothing responded or script failed */
       sleep(5);
       continue;
+
+    case 1: /* join success... */
+      break;
     }
     joined = 1;
 
