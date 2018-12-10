@@ -1,0 +1,94 @@
+
+
+
+
+The "DCSTAD Script" is responsible for executing on the following events (reasons):
+  . Join response from AP   -- "JOIN"
+  . Unjoin ACK from AP      -- "UNJOIN"
+  . DCSTAD Process Startup  -- "STARTUP"
+  . DCSTAD Process Shutdown -- "SHUTDOWN"
+
+
+
+
+AP Join Response
+  The script is invoked as such:
+    $ /path/to/dcstad-script
+
+  Environment Variables:
+    REASON                   -- "JOIN"
+    REPLY_FD                 -- The FD# for which to reply back to the daemon on.
+    PRIMARY_INTF             -- The interface name used for the WiFi primary channel.
+    PRIMARY_INTF_MACADDR     -- The MAC address of the primary channel interface.
+    DATACHAN_INTF_COUNT      -- The count of data channel interface names used for this channel bond. (must be >=1)
+    DATACHAN_INTF_N          -- The interface name used for a data channel (example: DATACHAN_INTF_0=wlan1, DATACHAN_INTF_1=wlan2, ...)
+    DATACHAN_INTF_N_MACADDR  -- The MAC address of a data channel.
+    DATACHAN_SSID_COUNT      -- The count of data channel SSID names used for this channel bond. (must be >=1)
+    DATACHAN_SSID_N          -- The SSID name available to be used used for a data channel bond (example: DATACHAN_SSID_0=some_dcw_datachan1, DATACHAN_SSID_1=some_dcw_datachan2, ...)
+
+  Exit Codes:
+     = 0 -- Success (DCSTAD will ACK Server)
+    >= 1 -- Failure (DCSTAD will NACK Server)
+
+  Reply:
+    For the "JOIN" reason, the script must tell the daemon which interfaces were
+    joined to which SSIDs. The "REPLY_FD" environment variable is provided for
+    this purpose. The file descriptor number in which to write the reply is 
+    provided in this variable.
+
+    Example, if there is only one data-channel interface ('wlan1') and one data-
+    channel SSID ('dcssid'), then the response to the "REPLY_FD" would be:
+      "wlan1 dcssid"
+
+
+
+
+AP Unjoin
+  The script is invoked as such:
+    $ /path/to/dcstad-script
+
+  Environment Variables:
+    REASON                   -- "JOIN"
+    PRIMARY_INTF             -- The interface name used for the WiFi primary channel.
+    PRIMARY_INTF_MACADDR     -- The MAC address of the primary channel interface.
+    DATACHAN_INTF_COUNT      -- The count of data channel interface names used for this channel bond. (must be >=1)
+    DATACHAN_INTF_N          -- The interface name used for a data channel (example: DATACHAN_INTF_0=wlan1, DATACHAN_INTF_1=wlan2, ...)
+    DATACHAN_INTF_N_MACADDR  -- The MAC address of a data channel.
+
+  Exit Codes:
+     = 0 -- Success
+    >= 1 -- Failure (not sure what to do here... log an error i guess?)
+
+
+
+
+Daemon Startup
+  The script is invoked as such:
+    $ /path/to/dcstad-script
+
+  Environment Variables:
+    REASON               -- "STARTUP"
+    PRIMARY_INTF         -- The interface name used for the WiFi primary channel.
+    DATACHAN_INTF_COUNT  -- The count of data channel interface names used for this channel bond. (must be >=1)
+    DATACHAN_INTF_N      -- The interface name used for a data channel (example: DATACHAN_INTF_0=wlan1, DATACHAN_INTF_1=wlan2, ...)
+
+  Exit Codes:
+     = 0 -- Success (DCSTAD daemon will continue to startup and run)
+    >= 1 -- Failure (DCSTAD daemon will abort and exit)
+
+
+
+Daemon Shutdown
+  The script is invoked as such:
+    $ /path/to/dcstad-script
+
+  Environment Variables:
+    REASON               -- "SHUTDOWN"
+    PRIMARY_INTF         -- The interface name used for the WiFi primary channel.
+    DATACHAN_INTF_COUNT  -- The count of data channel interface names used for this channel bond. (must be >=1)
+    DATACHAN_INTF_N      -- The interface name used for a data channel (example: DATACHAN_INTF_0=wlan1, DATACHAN_INTF_1=wlan2, ...)
+
+  Exit Codes:
+     = 0 -- Success (DCSTAD will continue to shut down)
+    >= 1 -- Failure (DCSTAD will log an error and continue to shut down)
+
