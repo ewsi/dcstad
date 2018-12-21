@@ -11,7 +11,7 @@ The "DCSTAD Script" is responsible for executing on the following events (reason
 
 
 
-AP Join Response
+AP Join Response (JOIN)
   The script is invoked as such:
     $ /path/to/dcstad-script
 
@@ -43,7 +43,7 @@ AP Join Response
 
 
 
-AP Unjoin
+AP Unjoin (UNJOIN)
   The script is invoked as such:
     $ /path/to/dcstad-script
 
@@ -62,7 +62,7 @@ AP Unjoin
 
 
 
-Daemon Startup
+Daemon Startup (STARTUP)
   The script is invoked as such:
     $ /path/to/dcstad-script
 
@@ -78,7 +78,7 @@ Daemon Startup
 
 
 
-Daemon Shutdown
+Daemon Shutdown (SHUTDOWN)
   The script is invoked as such:
     $ /path/to/dcstad-script
 
