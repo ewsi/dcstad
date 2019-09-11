@@ -27,6 +27,15 @@
 #include <string.h>
 #include <unistd.h>
 
+#ifdef __APPLE__
+  /*
+    to get this dependency, run this in the root of the dcstad cloned directory:
+    $ git clone https://github.com/NimbusKit/memorymapping.git
+  */
+  #include "../memorymapping/src/fmemopen.h"
+  #include "../memorymapping/src/fmemopen.c"
+#endif
+
 
 static void
 invoke_script_join(dcstad_cfg_t cfg, struct dcwmsg * const msg) {
