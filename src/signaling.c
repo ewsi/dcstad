@@ -25,7 +25,10 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE >= 199309L
+#endif
+#include <time.h>
 
 #ifdef __APPLE__
   /*
@@ -213,12 +216,13 @@ attempt_join_transaction(dcstad_cfg_t cfg) {
 
   /* send a few replies... (ACK || NACK) */
   for (i = 0; i < 3; i++) {
+    struct timespec slp = { 0, 250 * 1000 * 1000};
     dcwlogdbgf("Transmitting %s reply\n", (msg.id == DCWMSG_STA_ACK) ? "ACK" : "NACK");
     if (!dcwsock_send_msg(cfg->signaling_sock, &msg, cfg->ap_macaddr)) {
       dcwlogdbgf("%s\n", "dcw_send_msg() failed");
       return -1; /* failed */
     }
-    usleep(250000);
+    nanosleep(&slp, NULL);
   }
 
   return (msg.id == DCWMSG_STA_ACK) ? 1 : 0;
